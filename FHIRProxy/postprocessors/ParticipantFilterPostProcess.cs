@@ -235,6 +235,23 @@ namespace FHIRProxy.postprocessors
                             }
                         }
                     }
+
+                    var careTeams = await FHIRClient.CallFHIRServer($"CareTeams?patient={patid}&participant={pid}", null,"GET", auditheaders,log);
+                    if (careTeams != null)
+                    {
+                        JObject temp2 = JObject.Parse((string)careTeams.Content);
+                        if (temp2 != null && ((string)temp2["resourceType"]).Equals("Bundle"))
+                        {
+                            JArray entries = (JArray)temp2["entry"];
+                            if (entries != null && entries.Count > 0)
+                            {
+                                porcache[patientId] = true;
+                                if (!string.IsNullOrEmpty(encounterId)) porcache[encounterId] = true;
+                                return true;
+                            }
+                        }
+                    }
+
                 }
             }
             porcache[patientId] = false;
