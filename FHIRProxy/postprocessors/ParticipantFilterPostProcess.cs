@@ -236,7 +236,7 @@ namespace FHIRProxy.postprocessors
                         }
                     }
 
-                    var careTeams = await FHIRClient.CallFHIRServer($"CareTeams?patient={patid}&participant={pid}", null,"GET", auditheaders,log);
+                    var careTeams = await FHIRClient.CallFHIRServer($"CareTeam?patient={patid}&participant={pid}", null,"GET", auditheaders,log);
                     if (careTeams != null)
                     {
                         JObject temp2 = JObject.Parse((string)careTeams.Content);
