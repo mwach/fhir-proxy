@@ -43,6 +43,8 @@ namespace FHIRProxy.postprocessors
             ClaimsIdentity ci = (ClaimsIdentity)principal.Identity;
             string aadten = ci.Tenant();
             string name = ci.ObjectId();
+            string fhirUser = ci.FhirUser();
+            log.LogInformation("fhirUser: " + fhirUser);
 
             bool admin = Utils.inServerAccessRole(req,"A");
             List<string> resourceidentities = new List<string>();
@@ -57,10 +59,16 @@ namespace FHIRProxy.postprocessors
             {
                 if (fhirresourceroles.Any(r.Equals))
                 {
+                    log.LogInformation("checking role: " + r);
                     var entity = Utils.getLinkEntity(table, r, aadten + "-" + name);
                     if (entity != null)
                     {
                         resourceidentities.Add(r + "/" + entity.LinkedResourceId);
+                    }
+                    if(!String.IsNullOrEmpty(fhirUser))
+                    {
+                        log.LogInformation("adding role: " + r + "/" + fhirUser);
+                        resourceidentities.Add(r + "/" + fhirUser);
                     }
                 }
             }
