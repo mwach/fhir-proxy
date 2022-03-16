@@ -183,7 +183,7 @@ namespace FHIRProxy
             }
 
         }
-        public static string FhirUser(this ClaimsIdentity identity)
+        public static string FhirUser2(this ClaimsIdentity identity)
         {
             var tid = identity.Claims
                           .Where(c => c.Type == "fhirUser");
