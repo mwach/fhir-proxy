@@ -43,8 +43,7 @@ namespace FHIRProxy.postprocessors
             ClaimsIdentity ci = (ClaimsIdentity)principal.Identity;
             string aadten = ci.Tenant();
             string name = ci.ObjectId();
-//            string fhirUser = ci.FhirUser();
-            string fhirUser = "abc";
+            string fhirUser = ci.fhirUser();
             log.LogInformation("fhirUser: " + fhirUser);
 
             bool admin = Utils.inServerAccessRole(req,"A");
